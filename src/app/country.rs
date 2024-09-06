@@ -35,12 +35,11 @@ async fn delete_handler(Path(country): Path<u64>) -> (StatusCode, &'static str) 
 }
 
 pub fn country_routes() -> Router {
-    Router::new()
-        .nest(
-            "/country",
-            Router::new()
-                .route("/", get(get_handler).post(post_handler))
-                .route("/:country", put(put_handler).delete(delete_handler)),
-        )
-        .route_layer(middleware::from_fn(protected_guard))
+    Router::new().nest(
+        "/country",
+        Router::new()
+            .route("/", get(get_handler).post(post_handler))
+            .route("/:country", put(put_handler).delete(delete_handler))
+            .route_layer(middleware::from_fn(protected_guard)),
+    )
 }

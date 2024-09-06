@@ -1,15 +1,31 @@
+use std::collections::HashMap;
+
 use axum::{
     http::{HeaderMap, StatusCode},
     middleware,
     routing::post,
     Json, Router,
 };
+use jsonwebtoken::{encode, EncodingKey, Header};
 use serde_json::Value;
 
 use super::protected::protected_guard;
 
 async fn login_handler(Json(payload): Json<Value>) -> (StatusCode, &'static str) {
     println!("{payload:?}");
+    let mut map: HashMap<String, String> = HashMap::new();
+    map.insert("id".to_string(), "0".to_string());
+    map.insert("exp".to_string(), "1738368000000".to_string());
+
+    let result = encode::<HashMap<String, String>>(
+        &Header::new(jsonwebtoken::Algorithm::HS256),
+        &map,
+        &EncodingKey::from_secret("".as_ref()),
+    );
+    if let Ok(t) = result {
+        println!("{t}");
+    }
+
     (StatusCode::OK, "LOGIN HANDLER")
 }
 
