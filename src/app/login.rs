@@ -25,10 +25,9 @@ async fn login_handler(Json(payload): Json<Value>) -> Response<String> {
         &EncodingKey::from_secret("secret".as_ref()),
     );
     let token = token.unwrap_or_default();
-    println!("token = {token}");
     Response::builder()
         .status(200)
-        .header("Content-Type", "text/json")
+        .header("Content-Type", "application/json")
         .header("X-Token", token)
         .body("LOGIN HANDLER".to_string())
         .unwrap()

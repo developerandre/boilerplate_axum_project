@@ -15,7 +15,7 @@ pub async fn protected_guard(
     let auth = req.headers().get(AUTHORIZATION);
     if let Some(a) = auth {
         let token = a.to_str().unwrap_or_default().replace("Bearer", "");
-        println!("token check {}", token.trim());
+
         let result = decode::<serde_json::Value>(
             token.trim(),
             &DecodingKey::from_secret("secret".as_ref()),
