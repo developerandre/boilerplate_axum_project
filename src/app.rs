@@ -10,8 +10,9 @@ mod protected;
 
 pub fn app_axum() -> Router {
     let routes = Router::new()
-        .nest("/auth", login_routes())
         .nest("/country", country_routes())
+        .router_layer(middleware::from_fn(protected_guard))
+        .nest("/auth", login_routes())
         .layer(DefaultBodyLimit::max(1024))
         .layer(CompressionLayer::new())
         .layer(ValidateRequestHeaderLayer::accept("application/json"));
